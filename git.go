@@ -50,6 +50,15 @@ func (g *Git) LogOneline() (cmd *exec.Cmd) {
 	return
 }
 
+func (g *Git) HasRemote() bool {
+	args := []string{"config", "--get", "remote.origin.url"}
+	cmd := gitCmd(args)
+	cmd.Dir = g.Dir
+
+	err := cmd.Run()
+	return err == nil
+}
+
 func currentBranch(path string) string {
 	args := []string{"rev-parse", "--abbrev-ref", "HEAD"}
 	cmd := exec.Command("git", args...)
